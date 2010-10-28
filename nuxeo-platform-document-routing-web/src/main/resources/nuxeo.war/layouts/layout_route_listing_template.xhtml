@@ -15,9 +15,37 @@
     
   This is a copy/paste from the original layout_listing_template.xhmtl
   It allows to add columns to show the structure of a route.
-</c:if>
+  </c:if>
+
 	<c:if
 		test="#{showListingHeader and layout.properties.showListingHeader}">
+
+    <div class="lockFile_block" id='lock_unlock_button'>
+      <c:if test="#{!empty currentDocumentLockDetails}">
+        <h:outputText value="#{messages['label.summary.locked.intro']} "/>
+        <h:outputText class="summary_locked" value="#{messages['label.summary.locked']}"/>
+        <c:if test="#{currentDocumentCanBeUnlocked}">
+          <h:outputText value=" | " />
+          <h:commandLink value="#{messages['command.unlock']}"
+            action="#{routingActions.unlockCurrentRoute}"/>
+        </c:if>
+        <div class="lockDetail">
+          <h:outputText value="#{messages['label.summary.by']} #{currentDocumentLockDetails['document.locker']}, "/>
+          <h:outputText value="#{messages['label.summary.the']} #{currentDocumentLockDetails['document.lock.time']}"/>
+        </div>
+      </c:if>
+  
+      <c:if test="#{empty currentDocumentLockDetails}">
+        <h:outputText value="#{messages['label.summary.locked.intro']} "/>
+        <h:outputText class="summary_unlocked" value="#{messages['label.summary.unlocked']} "/>
+        <c:if test="#{currentDocumentCanBeLocked}" >
+          <h:outputText value=" | " />
+          <h:commandLink value="#{messages['command.lock']}"
+            action="#{routingActions.lockCurrentRoute}"/>
+        </c:if>
+      </c:if>
+    </div>
+
 		<thead>
 			<tr>
 				<nxl:layoutColumn>
@@ -96,28 +124,24 @@
 				<c:when test="#{layoutColumnIndex == 0}">
 					<c:forEach var="folder"
 						items="#{value.data.getFirstChildFolders()}">
-						<td rowspan="#{folder.getTotalChildCount()}"><nxl:layoutColumnWidget>
-							<nxl:widget widget="#{widget}" value="#{value}" />
-							<c:if
-								test="#{layoutColumn.size > 1 and layoutColumn.size > widgetIndex + 1 and widgetIndex > 0}">
-								<br />
-							</c:if>
-						</nxl:layoutColumnWidget></td>
+						<td rowspan="#{folder.getTotalChildCount()}">
+              <nxl:layoutColumnWidget>
+  							<nxl:widget widget="#{widget}" value="#{value}" />
+  							<c:if
+  								test="#{layoutColumn.size > 1 and layoutColumn.size > widgetIndex + 1 and widgetIndex > 0}">
+  								<br />
+  							</c:if>
+  						</nxl:layoutColumnWidget>
+            </td>
 					</c:forEach>
 					<c:if
 						test="#{(value.data.getRouteMaxDepth() - value.data.getDepth()) > 0}">
-						<td
-							colspan="#{value.data.getRouteMaxDepth() - value.data.getDepth()}">route
-						depth_#{value.data.getRouteMaxDepth()}_current
-						depth_#{value.data.getDepth()}_#{value.data.getFirstChildFolders().size()}_</td>
+						<td colspan="#{value.data.getRouteMaxDepth() - value.data.getDepth()}" />
 					</c:if>
 				</c:when>
 				<c:otherwise>
 					<td class="#{layoutColumn.properties.columnStyleClass}"><nxl:layoutColumnWidget>
 						<nxl:widget widget="#{widget}" value="#{value}" />
-						<c:if test="#{layoutColumnIndex == 1}">
-						<span id="#{layoutListingStatus.index}_#{value.data.depth}_#{value.data.getFirstChildFolders().size()}_#{value.data.document.title}" />
-						</c:if>
 						<c:if
 							test="#{layoutColumn.size > 1 and layoutColumn.size > widgetIndex + 1 and widgetIndex > 0}">
 							<br />

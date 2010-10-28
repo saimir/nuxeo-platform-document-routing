@@ -54,6 +54,10 @@ public class DocumentRouteTableElement {
         this.isFirstChild = isFirstChild;
     }
 
+    public RouteFolderElement getParent() {
+        return parent;
+    }
+
     public DocumentRouteElement getElement() {
         return element;
     }
