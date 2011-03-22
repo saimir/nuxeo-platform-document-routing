@@ -271,7 +271,7 @@ public interface DocumentRoutingService {
      * @param session
      * @throws ClientException
      */
-    boolean isLockedByCurrentUser(DocumentRoute routeModel, CoreSession session)
-            throws ClientException;
+//    boolean isLockedByCurrentUser(DocumentRoute routeModel, CoreSession session)
+//            throws ClientException;
 
 }

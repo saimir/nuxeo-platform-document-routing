@@ -372,14 +372,14 @@ public class DocumentRoutingActionsBean implements Serializable {
     public String removeStep() throws ClientException {
         boolean alreadyLockedByCurrentUser = false;
         DocumentRoute routeModel = getRelatedRoute();
-        if (getDocumentRoutingService().isLockedByCurrentUser(routeModel,
-                documentManager)) {
-            alreadyLockedByCurrentUser = true;
-        } else {
-            if (lockRoute(routeModel) == null) {
-                return null;
-            }
-        }
+//        if (getDocumentRoutingService().isLockedByCurrentUser(routeModel,
+//                documentManager)) {
+//            alreadyLockedByCurrentUser = true;
+//        } else {
+//            if (lockRoute(routeModel) == null) {
+//                return null;
+//            }
+//        }
         if (StringUtils.isEmpty(stepId)) {
             return null;
         }
@@ -400,10 +400,10 @@ public class DocumentRoutingActionsBean implements Serializable {
                 routeModel.getDocument());
         // Release the lock only when currentUser had locked it before
         // entering this method.
-        if (!alreadyLockedByCurrentUser) {
-            getDocumentRoutingService().unlockDocumentRoute(routeModel,
-                    documentManager);
-        }
+//        if (!alreadyLockedByCurrentUser) {
+//            getDocumentRoutingService().unlockDocumentRoute(routeModel,
+//                    documentManager);
+//        }
         return null;
     }
 
@@ -430,8 +430,9 @@ public class DocumentRoutingActionsBean implements Serializable {
 
     @Factory(value = "currentRouteLockedByCurrentUser", scope = ScopeType.EVENT)
     public boolean isCurrentRouteLockedByCurrentUser() throws ClientException {
-        return getDocumentRoutingService().isLockedByCurrentUser(
-                getRelatedRoute(), documentManager);
+//        return getDocumentRoutingService().isLockedByCurrentUser(
+//                getRelatedRoute(), documentManager);
+        return true;
     }
 
     public boolean isCurrentRouteLocked() throws ClientException {
@@ -503,14 +504,14 @@ public class DocumentRoutingActionsBean implements Serializable {
         DocumentModel changeableDocument = navigationContext.getChangeableDocument();
         DocumentRouteElement docRouteElement = changeableDocument.getAdapter(DocumentRouteElement.class);
         DocumentRoute route = docRouteElement.getDocumentRoute(documentManager);
-        if (getDocumentRoutingService().isLockedByCurrentUser(route,
-                documentManager)) {
-            alreadyLockedByCurrentUser = true;
-        } else {
-            if (lockRoute(route) == null) {
-                return null;
-            }
-        }
+//        if (getDocumentRoutingService().isLockedByCurrentUser(route,
+//                documentManager)) {
+//            alreadyLockedByCurrentUser = true;
+//        } else {
+//            if (lockRoute(route) == null) {
+//                return null;
+//            }
+//        }
         try {
             getDocumentRoutingService().updateRouteElement(docRouteElement,
                     documentManager);
@@ -529,10 +530,10 @@ public class DocumentRoutingActionsBean implements Serializable {
         EventManager.raiseEventsOnDocumentChange(changeableDocument);
         // Release the lock only when currentUser had locked it before
         // entering this method.
-        if (!alreadyLockedByCurrentUser) {
-            getDocumentRoutingService().unlockDocumentRoute(route,
-                    documentManager);
-        }
+//        if (!alreadyLockedByCurrentUser) {
+//            getDocumentRoutingService().unlockDocumentRoute(route,
+//                    documentManager);
+//        }
         if (docWithAttachedRouteId == null) {
             return webActions.setCurrentTabAndNavigate(
                     docRouteElement.getDocumentRoute(documentManager).getDocument(),
@@ -540,6 +541,10 @@ public class DocumentRoutingActionsBean implements Serializable {
         }
 
         setRelatedRouteWhenNavigateBackToCase();
+//        if (!alreadyLockedByCurrentUser) {
+//            getDocumentRoutingService().unlockDocumentRoute(route,
+//                    documentManager);
+//        }
         return webActions.setCurrentTabAndNavigate(
                 documentManager.getDocument(new IdRef(docWithAttachedRouteId)),
                 "TAB_CASE_MANAGEMENT_VIEW_RELATED_ROUTE");
@@ -669,12 +674,12 @@ public class DocumentRoutingActionsBean implements Serializable {
     public String saveRouteElement() throws ClientException {
         boolean alreadyLockedByCurrentUser = false;
         DocumentRoute routeModel = getRelatedRoute();
-        if (getDocumentRoutingService().isLockedByCurrentUser(routeModel,
-                documentManager)) {
-            alreadyLockedByCurrentUser = true;
-        } else {
-            lockRoute(routeModel);
-        }
+//        if (getDocumentRoutingService().isLockedByCurrentUser(routeModel,
+//                documentManager)) {
+//            alreadyLockedByCurrentUser = true;
+//        } else {
+//            lockRoute(routeModel);
+//        }
 
         DocumentModel newDocument = navigationContext.getChangeableDocument();
         // Document has already been created if it has an id.
