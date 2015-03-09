@@ -8,7 +8,7 @@
   <script>
     jQuery(document).ready(function() {
       jQuery('##{widget.id}_target').empty();
-      loadGraph('#{currentDocument.id}', currentUserLang, '#{widget.id}_target');
+      loadGraph('#{currentDocument.id}', currentUserLang, jQuery('##{widget.id}_target'));
     });
   </script>
   <div id="#{widget.id}_graphView_box">

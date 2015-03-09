@@ -75,11 +75,11 @@ function countElement(item, array) {
 	});
 	return count;
 };
-function displayGraph(data, divContainerTargetId) {
+function displayGraph(data, divContainerTarget) {
 	jQuery.each(data['nodes'], function() {
 		var node = '<div class="workflow_node" id="' + this.id + '">' + this.title
 				+ '</div>';
-		var el = jQuery(node).appendTo('#' + divContainerTargetId).css(
+		var el = jQuery(node).appendTo(divContainerTarget).css(
 				'position', 'absolute').css('left', this.x).css('top', this.y);
 
 		if (this.isStartNode) {
@@ -153,11 +153,11 @@ function displayGraph(data, divContainerTargetId) {
 			path: segments
 		});
 	});
-	jQuery(document.getElementById(divContainerTargetId)).append(
+	jQuery(divContainerTarget).append(
             "<input type='hidden' name='graphInitDone' value='true' />");
 };
 
-function invokeGetGraphOp(routeId, currentLang, divContainerTargetId) {
+function invokeGetGraphOp(routeId, currentLang, divContainerTarget) {
 	var automationCtx = {};
 	var options = {repository : ctx.repository };
 	var getGraphNodesExec = jQuery().automation('Document.Routing.GetGraph', options);
@@ -165,14 +165,13 @@ function invokeGetGraphOp(routeId, currentLang, divContainerTargetId) {
 	getGraphNodesExec.addParameter("routeDocId", routeId);
 	getGraphNodesExec.addParameter("language", currentLang);
 	getGraphNodesExec.executeGetBlob(function(data, status, xhr) {
-		displayGraph(data, divContainerTargetId);
+		displayGraph(data, divContainerTarget);
 	}, function(xhr, status, errorMessage) {
-		jQuery('<div>Can not load graph </div>').appendTo(
-				'#' + divContainerTargetId);
+		jQuery('<div>Can not load graph </div>').appendTo(divContainerTarget);
 	}, true);
 };
 
-function loadGraph(routeDocId, currentLang, divContainerTargetId) {
+function loadGraph(routeDocId, currentLang, divContainerTarget) {
     jsPlumbInitializeDefault();
-    invokeGetGraphOp(routeDocId, currentLang, divContainerTargetId);
+    invokeGetGraphOp(routeDocId, currentLang, divContainerTarget);
 };

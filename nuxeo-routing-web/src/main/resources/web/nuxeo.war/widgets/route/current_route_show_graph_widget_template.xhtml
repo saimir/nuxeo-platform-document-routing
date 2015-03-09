@@ -9,10 +9,9 @@
 
   <script type="text/javascript">
     <h:outputText value="var currentLang='#{restHelper.getLocaleString()}';"/>
-    <h:outputText value="var divContainerTargetId='#{widget.id}_target';"/>
     function showGraph(routeId) {
       jQuery('##{widget.id}_target').empty();
-      loadGraph(routeId, currentLang, divContainerTargetId);
+      loadGraph(routeId, currentLang, jQuery('##{widget.id}_target'));
       openFancyBox('##{widget.id}_graphView_box', {
         'autoScale': false,
         'autoDimensions': false,
